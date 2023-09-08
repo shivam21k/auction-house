@@ -22,5 +22,3 @@ public class BidderController {
         return response;
     }
 }
-//smjh gya thik hai
-//kjio
