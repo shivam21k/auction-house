@@ -1,6 +1,8 @@
 package com.auctionhouse.app.controller;
 
 import com.auctionhouse.app.request.AdminRequest;
+import com.auctionhouse.app.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +15,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+    @Autowired
+    private AdminService adminService;
     @GetMapping(value = "/getUserList")
-    public ResponseEntity<Map<String, Object>> getBidderList(){
+    public ResponseEntity<Map<String, Object>> getUserList(){
         Map<String, Object> response  = new HashMap<>();
-        ArrayList<String> users = new ArrayList<>();
-        users.add("Shivam");
-        users.add("Gaurav");
-        users.add("Sukanya");
-        users.add("Mani");
-        response.put("userList", users);
+        response = adminService.getUserList();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

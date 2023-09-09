@@ -1,14 +1,13 @@
-package com.auctionhouse.app.dao;
+package com.auctionhouse.app.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.awt.*;
 import java.util.Map;
 
 @Document(collection = "user")
-public class User {
+public class UserModel {
     @Id
     private ObjectId id;
     private String name;
