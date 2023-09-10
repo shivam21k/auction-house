@@ -17,4 +17,13 @@ public class UserModel {
 
     private int age;
 
+    public UserModel(ObjectId id, String name, Map<String, Object> email, Map<String, Object> address, Map<String, Object> phone, int age){
+        super();
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.age = age;
+    }
 }
