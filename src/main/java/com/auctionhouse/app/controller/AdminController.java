@@ -20,9 +20,11 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    //To get users list
     @GetMapping(value = "/getUserList")
     public ResponseEntity<Map<String,Object>> getUserList(){
         Map<String,Object> response  = adminService.getUserList();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
+
