@@ -26,6 +26,7 @@ public class AdminController {
         model.addAttribute("pendingProducts", adminService.getPendingProducts());
         model.addAttribute("currentAuction", auctionService.getCurrentAuction().orElse(null));
         model.addAttribute("upcomingAuctions", auctionService.getAllUpcomingAuctions());
+        model.addAttribute("awaitingApprovalAuctions", auctionService.getAwaitingAdminApprovalAuctions());
         return "admin-dashboard";
     }
 
@@ -40,6 +41,20 @@ public class AdminController {
     public String rejectProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         adminService.rejectProduct(id);
         redirectAttributes.addFlashAttribute("successMessage", "Product rejected.");
+        return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/admin/auctions/{id}/finalize")
+    public String finalizeAuction(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        auctionService.finalizeAuctionOwnership(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Auction ownership approved and closed.");
+        return "redirect:/admin/dashboard";
+    }
+
+    @GetMapping("/admin/auctions/start-test-live")
+    public String startTestLiveAuction(RedirectAttributes redirectAttributes) {
+        String message = auctionService.startTestLiveAuctionNow();
+        redirectAttributes.addFlashAttribute("successMessage", message);
         return "redirect:/admin/dashboard";
     }
 }

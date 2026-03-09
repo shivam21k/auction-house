@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/seller/**").hasRole("SELLER")
-                        .requestMatchers("/api/buyer/**").hasRole("BUYER")
+                        .requestMatchers("/api/buyer/**").hasAnyRole("BUYER", "SELLER")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -90,7 +90,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/seller/**").hasRole("SELLER")
-                        .requestMatchers("/buyer/**").hasRole("BUYER")
+                        .requestMatchers("/buyer/**").hasAnyRole("BUYER", "SELLER")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

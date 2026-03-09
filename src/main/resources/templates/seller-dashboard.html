@@ -7,13 +7,14 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
 </head>
 <body>
-<div class="container">
+<div class="container dashboard-shell">
     <div class="topbar">
         <div>
             <h2>Seller Dashboard</h2>
-            <p class="muted">Manage product listings and requested auction slots.</p>
+            <p class="muted">Submit products, reserve slots, monitor approvals, and join live bidding.</p>
         </div>
         <div class="row">
+            <a class="btn" th:href="@{/buyer/dashboard}">Live Bid Board</a>
             <a class="btn btn-secondary" th:href="@{/seller/profile}">My Profile</a>
             <form th:action="@{/logout}" method="post"><button class="btn btn-secondary" type="submit">Logout</button></form>
         </div>
@@ -24,7 +25,7 @@
 
     <div class="grid-2">
         <div class="panel">
-            <h3 class="section-title">Add Product for Auction Approval</h3>
+            <h3>Add Product for Approval</h3>
             <form th:action="@{/seller/products}" th:object="${productRequest}" method="post">
                 <label>Title</label>
                 <input type="text" th:field="*{title}" required/>
@@ -49,30 +50,28 @@
                 <label>Requested Slot End</label>
                 <input type="datetime-local" th:field="*{requestedSlotEnd}" required/>
 
-                <button class="btn" type="submit">Submit for Approval</button>
+                <button class="btn" type="submit">Submit Listing</button>
             </form>
         </div>
 
-        <div class="panel">
-            <h3 class="section-title">Seller Snapshot</h3>
+        <div class="spotlight">
+            <h3>Seller Profile Snapshot</h3>
             <p><strong>Name:</strong> <span th:text="${seller.fullName}"></span></p>
             <p><strong>Email:</strong> <span th:text="${seller.email}"></span></p>
             <p><strong>Phone:</strong> <span th:text="${seller.phone}"></span></p>
             <p><strong>Company:</strong> <span th:text="${seller.companyName}"></span></p>
-            <p class="muted">Use "My Profile" for full details.</p>
+            <a class="btn" th:href="@{/seller/profile}" style="margin-top: 8px;">Open Full Profile</a>
         </div>
     </div>
 
-    <h3 class="section-title" style="margin-top: 18px;">My Products</h3>
+    <h3 class="section-title">My Products</h3>
     <div class="table-wrap">
         <table>
             <tr><th>Title</th><th>Base Price</th><th>Status</th><th>Requested Slot</th></tr>
             <tr th:each="product : ${products}">
                 <td th:text="${product.title}"></td>
                 <td th:text="${product.basePrice}"></td>
-                <td>
-                    <span class="status" th:classappend="' status-' + ${product.status}" th:text="${product.status}"></span>
-                </td>
+                <td><span class="status" th:classappend="' status-' + ${product.status}" th:text="${product.status}"></span></td>
                 <td th:text="${product.requestedSlotStart + ' to ' + product.requestedSlotEnd}"></td>
             </tr>
         </table>

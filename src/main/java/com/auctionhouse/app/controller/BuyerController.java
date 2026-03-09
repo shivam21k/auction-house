@@ -7,6 +7,10 @@ import com.auctionhouse.app.service.AuctionService;
 import com.auctionhouse.app.service.BuyerService;
 import com.auctionhouse.app.service.UserService;
 import jakarta.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -61,6 +66,28 @@ public class BuyerController {
         }
     }
 
+    @GetMapping("/buyer/live-auction")
+    @ResponseBody
+    public Map<String, Object> liveAuctionSnapshot() {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        Optional<Auction> currentAuction = auctionService.getCurrentAuction();
+
+        payload.put("live", currentAuction.isPresent());
+        if (currentAuction.isEmpty()) {
+            return payload;
+        }
+
+        Auction auction = currentAuction.get();
+        long secondsLeft = Math.max(0, Duration.between(LocalDateTime.now(), auction.getEndTime()).toSeconds());
+
+        payload.put("auctionId", auction.getId());
+        payload.put("productTitle", auction.getProduct().getTitle());
+        payload.put("currentBid", auction.getCurrentBid());
+        payload.put("secondsLeft", secondsLeft);
+        payload.put("endTime", auction.getEndTime().toString());
+        return payload;
+    }
+
     private void populateDashboardModel(Model model, BidRequest bidRequest) {
         Optional<Auction> currentAuction = auctionService.getCurrentAuction();
         if (currentAuction.isPresent() && bidRequest.getAuctionId() == null) {
@@ -68,6 +95,7 @@ public class BuyerController {
         }
         model.addAttribute("currentAuction", currentAuction.orElse(null));
         model.addAttribute("upcomingAuctions", auctionService.getUpcomingAuctions());
+        model.addAttribute("awaitingApprovalAuctions", auctionService.getAwaitingAdminApprovalAuctions());
         model.addAttribute("bidRequest", bidRequest);
     }
 }

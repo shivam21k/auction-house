@@ -8,14 +8,14 @@
 </head>
 <body>
 <div class="container narrow">
-    <div class="hero" style="padding-top: 6px; text-align: left;">
-        <h2 style="margin-bottom: 8px;">Create your account</h2>
-        <p>Sign up as buyer or seller.</p>
+    <div class="spotlight">
+        <h2>Create Your Account</h2>
+        <p>Join as buyer or seller and start participating in curated auctions.</p>
     </div>
 
     <div class="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-    <form th:action="@{/signup}" th:object="${signupRequest}" method="post">
+    <form th:action="@{/signup}" th:object="${signupRequest}" method="post" style="margin-top: 12px;">
         <label>Full Name</label>
         <input type="text" th:field="*{fullName}" required/>
         <p class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></p>
@@ -46,7 +46,7 @@
         <button class="btn" type="submit">Create Account</button>
     </form>
 
-    <p class="auth-footer muted">Already have an account? <a th:href="@{/login}">Login</a></p>
+    <p class="auth-footer">Already have an account? <a th:href="@{/login}">Login</a></p>
 </div>
 </body>
 </html>

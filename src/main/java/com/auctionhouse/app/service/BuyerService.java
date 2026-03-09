@@ -8,6 +8,7 @@ import com.auctionhouse.app.repository.AuctionRepository;
 import com.auctionhouse.app.repository.BidRepository;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,11 +24,15 @@ public class BuyerService {
 
     @Transactional
     public void placeBid(Long auctionId, BigDecimal amount, User buyer) {
-        Auction auction = auctionRepository.findById(auctionId)
+        Auction auction = auctionRepository.findByIdForUpdate(auctionId)
                 .orElseThrow(() -> new IllegalArgumentException("Auction not found"));
 
         if (auction.getStatus() != AuctionStatus.LIVE) {
             throw new IllegalArgumentException("Auction is not live");
+        }
+
+        if (auction.getEndTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Bidding window is closed for this auction");
         }
 
         if (amount.compareTo(auction.getCurrentBid()) <= 0) {

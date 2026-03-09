@@ -8,16 +8,16 @@
 </head>
 <body>
 <div class="container narrow">
-    <div class="hero" style="padding-top: 6px; text-align: left;">
-        <h2 style="margin-bottom: 8px;">Welcome Back</h2>
-        <p>Login as buyer, seller, or admin.</p>
+    <div class="spotlight">
+        <h2>Welcome Back</h2>
+        <p>Login as buyer, seller, or admin to continue.</p>
     </div>
 
     <div class="alert alert-success" th:if="${param.registered}">Account created successfully. Please login.</div>
     <div class="alert" th:if="${param.error}">Invalid email or password.</div>
     <div class="alert" th:if="${param.logout}">Logged out successfully.</div>
 
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post" style="margin-top: 12px;">
         <label>Email</label>
         <input type="email" name="username" required/>
 
@@ -27,7 +27,14 @@
         <button class="btn" type="submit">Login</button>
     </form>
 
-    <p class="auth-footer muted">New here? <a th:href="@{/signup}">Create account</a></p>
+    <div class="credentials">
+        <strong>Demo users</strong><br/>
+        Admin: <code>admin@auctionhouse.com</code> / <code>Admin@123</code><br/>
+        Seller: <code>seller1@auctionhouse.com</code> / <code>Password@123</code><br/>
+        Buyer: <code>buyer1@auctionhouse.com</code> / <code>Password@123</code>
+    </div>
+
+    <p class="auth-footer">New here? <a th:href="@{/signup}">Create account</a></p>
 </div>
 </body>
 </html>

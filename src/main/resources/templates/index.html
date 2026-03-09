@@ -7,14 +7,38 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
 </head>
 <body>
-<div class="container narrow">
+<div class="container dashboard-shell">
     <div class="hero">
+        <div class="brand-pill">Live Bidding Platform</div>
         <h1>Auction House</h1>
-        <p>Buy rare artifacts, sell with confidence, and manage auctions with complete admin control.</p>
+        <p>Enterprise-ready auction portal for admins, sellers, and buyers with live bidding, approval queues, and upcoming auction scheduling.</p>
     </div>
-    <div class="row" style="justify-content:center; margin-top: 18px;">
+
+    <div class="grid-3" style="margin-top: 16px;">
+        <div class="card">
+            <h3>Admin Control</h3>
+            <p class="muted">Review product approvals, monitor live auctions, and control auction pipeline.</p>
+        </div>
+        <div class="card">
+            <h3>Seller Workspace</h3>
+            <p class="muted">List products, choose auction slots, and track status from pending to live.</p>
+        </div>
+        <div class="card">
+            <h3>Buyer Experience</h3>
+            <p class="muted">See live lots, place bids in real time, and prepare for upcoming auctions.</p>
+        </div>
+    </div>
+
+    <div class="row" style="justify-content:center; margin-top: 16px;">
         <a class="btn" th:href="@{/login}">Login</a>
         <a class="btn btn-secondary" th:href="@{/signup}">Create Account</a>
+    </div>
+
+    <div class="credentials" style="max-width: 760px; margin-inline: auto;">
+        <strong>Demo quick access</strong><br/>
+        Admin: <code>admin@auctionhouse.com</code> / <code>Admin@123</code><br/>
+        Seller: <code>seller1@auctionhouse.com</code> / <code>Password@123</code><br/>
+        Buyer: <code>buyer1@auctionhouse.com</code> / <code>Password@123</code>
     </div>
 </div>
 </body>

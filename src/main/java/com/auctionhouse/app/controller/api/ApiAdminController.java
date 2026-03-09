@@ -53,4 +53,10 @@ public class ApiAdminController {
         adminService.rejectProduct(id);
         return ResponseEntity.ok(new ApiMessageResponse("Product rejected"));
     }
+
+    @PostMapping("/auctions/start-test-live")
+    public ResponseEntity<ApiMessageResponse> startTestLiveAuction() {
+        String message = auctionService.startTestLiveAuctionNow();
+        return ResponseEntity.ok(new ApiMessageResponse(message));
+    }
 }

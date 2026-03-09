@@ -35,9 +35,9 @@ public class AdminService {
         metrics.put("buyers", userRepository.countByRole(Role.BUYER));
         metrics.put("sellers", userRepository.countByRole(Role.SELLER));
         metrics.put("productsPending", productRepository.countByStatus(ProductStatus.PENDING_APPROVAL));
-        metrics.put("productsApproved", productRepository.countByStatus(ProductStatus.APPROVED));
         metrics.put("auctionsUpcoming", auctionRepository.countByStatus(AuctionStatus.UPCOMING));
         metrics.put("auctionsLive", auctionRepository.countByStatus(AuctionStatus.LIVE));
+        metrics.put("awaitingApproval", auctionRepository.countByStatus(AuctionStatus.AWAITING_ADMIN_APPROVAL));
         return metrics;
     }
 

@@ -6,5 +6,6 @@ public enum ProductStatus {
     REJECTED,
     UPCOMING,
     LIVE,
+    AWAITING_ADMIN_APPROVAL,
     CLOSED
 }

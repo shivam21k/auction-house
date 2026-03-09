@@ -7,35 +7,58 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
 </head>
 <body>
-<div class="container">
+<div class="container dashboard-shell">
     <div class="topbar">
         <div>
             <h2>Admin Console</h2>
-            <p class="muted">Track all listings, approvals, live auctions, and queue.</p>
+            <p class="muted">Control approvals, monitor live auctions, and settle winning bids.</p>
         </div>
         <form th:action="@{/logout}" method="post"><button class="btn btn-secondary" type="submit">Logout</button></form>
+    </div>
+
+    <div class="row" style="margin-bottom:10px;">
+        <a class="btn" th:href="@{/admin/auctions/start-test-live}">Start Live Test Auction (1 min)</a>
     </div>
 
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
     <div class="cards">
-        <div class="card"><h3 th:text="${metrics.buyers}"></h3><p>Total Buyers</p></div>
-        <div class="card"><h3 th:text="${metrics.sellers}"></h3><p>Total Sellers</p></div>
-        <div class="card"><h3 th:text="${metrics.productsPending}"></h3><p>Pending Products</p></div>
-        <div class="card"><h3 th:text="${metrics.auctionsLive}"></h3><p>Live Auctions</p></div>
+        <div class="card metric-card"><h3 th:text="${metrics.buyers}"></h3><p>Total Buyers</p></div>
+        <div class="card metric-card"><h3 th:text="${metrics.sellers}"></h3><p>Total Sellers</p></div>
+        <div class="card metric-card"><h3 th:text="${metrics.productsPending}"></h3><p>Pending Products</p></div>
+        <div class="card metric-card"><h3 th:text="${metrics.auctionsLive}"></h3><p>Live Auctions</p></div>
+        <div class="card metric-card"><h3 th:text="${metrics.awaitingApproval}"></h3><p>Awaiting Settlement</p></div>
     </div>
 
-    <h3 class="section-title">Current Auction</h3>
-    <div class="panel" th:if="${currentAuction != null}">
-        <p><strong>Item:</strong> <span th:text="${currentAuction.product.title}"></span></p>
-        <p><strong>Current Bid:</strong> <span th:text="${currentAuction.currentBid}"></span></p>
-        <p><strong>Ends:</strong> <span th:text="${currentAuction.endTime}"></span></p>
+    <div class="spotlight" th:if="${currentAuction != null}">
+        <h3>Current Live Auction: <span th:text="${currentAuction.product.title}"></span></h3>
+        <p>Current Bid: <strong th:text="${currentAuction.currentBid}"></strong> | Ends: <span th:text="${currentAuction.endTime}"></span></p>
+        <p class="muted">Timer is 1 minute and latest highest bid wins.</p>
     </div>
-    <div class="panel" th:if="${currentAuction == null}">
-        <p>No live auction right now.</p>
+    <div class="spotlight" th:if="${currentAuction == null}">
+        <h3>No live auction at this moment</h3>
+        <p>The next approved item will be promoted automatically.</p>
     </div>
 
-    <h3 class="section-title" style="margin-top: 18px;">Upcoming Auctions (Next in line)</h3>
+    <h3 class="section-title">Auctions Awaiting Admin Approval</h3>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Product</th><th>Highest Bid</th><th>Winner</th><th>Status</th><th>Action</th></tr>
+            <tr th:each="auction : ${awaitingApprovalAuctions}">
+                <td th:text="${auction.product.title}"></td>
+                <td th:text="${auction.currentBid}"></td>
+                <td th:text="${auction.winner != null ? auction.winner.fullName : 'No bids'}"></td>
+                <td><span class="status status-AWAITING_ADMIN_APPROVAL">Awaiting Admin Approval</span></td>
+                <td>
+                    <form th:action="@{'/admin/auctions/' + ${auction.id} + '/finalize'}" method="post">
+                        <button class="btn btn-success" type="submit">Approve Ownership</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3 class="section-title">Upcoming Auctions (Next in line)</h3>
     <div class="table-wrap">
         <table>
             <tr><th>Product</th><th>Seller</th><th>Start</th><th>End</th></tr>
@@ -48,7 +71,7 @@
         </table>
     </div>
 
-    <h3 class="section-title" style="margin-top: 18px;">Pending Seller Product Approvals</h3>
+    <h3 class="section-title">Pending Seller Product Approvals</h3>
     <div class="table-wrap">
         <table>
             <tr><th>Product</th><th>Seller</th><th>Base Price</th><th>Requested Slot</th><th>Actions</th></tr>
