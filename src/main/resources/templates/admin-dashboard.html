@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Admin Console | Auction House</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="topbar">
+        <div>
+            <h2>Admin Console</h2>
+            <p class="muted">Track all listings, approvals, live auctions, and queue.</p>
+        </div>
+        <form th:action="@{/logout}" method="post"><button class="btn btn-secondary" type="submit">Logout</button></form>
+    </div>
+
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <div class="cards">
+        <div class="card"><h3 th:text="${metrics.buyers}"></h3><p>Total Buyers</p></div>
+        <div class="card"><h3 th:text="${metrics.sellers}"></h3><p>Total Sellers</p></div>
+        <div class="card"><h3 th:text="${metrics.productsPending}"></h3><p>Pending Products</p></div>
+        <div class="card"><h3 th:text="${metrics.auctionsLive}"></h3><p>Live Auctions</p></div>
+    </div>
+
+    <h3 class="section-title">Current Auction</h3>
+    <div class="panel" th:if="${currentAuction != null}">
+        <p><strong>Item:</strong> <span th:text="${currentAuction.product.title}"></span></p>
+        <p><strong>Current Bid:</strong> <span th:text="${currentAuction.currentBid}"></span></p>
+        <p><strong>Ends:</strong> <span th:text="${currentAuction.endTime}"></span></p>
+    </div>
+    <div class="panel" th:if="${currentAuction == null}">
+        <p>No live auction right now.</p>
+    </div>
+
+    <h3 class="section-title" style="margin-top: 18px;">Upcoming Auctions (Next in line)</h3>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Product</th><th>Seller</th><th>Start</th><th>End</th></tr>
+            <tr th:each="auction : ${upcomingAuctions}">
+                <td th:text="${auction.product.title}"></td>
+                <td th:text="${auction.product.seller.fullName}"></td>
+                <td th:text="${auction.startTime}"></td>
+                <td th:text="${auction.endTime}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <h3 class="section-title" style="margin-top: 18px;">Pending Seller Product Approvals</h3>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Product</th><th>Seller</th><th>Base Price</th><th>Requested Slot</th><th>Actions</th></tr>
+            <tr th:each="product : ${pendingProducts}">
+                <td th:text="${product.title}"></td>
+                <td th:text="${product.seller.fullName}"></td>
+                <td th:text="${product.basePrice}"></td>
+                <td th:text="${product.requestedSlotStart + ' to ' + product.requestedSlotEnd}"></td>
+                <td>
+                    <div class="row">
+                        <form th:action="@{'/admin/products/' + ${product.id} + '/approve'}" method="post">
+                            <button class="btn btn-success" type="submit">Approve</button>
+                        </form>
+                        <form th:action="@{'/admin/products/' + ${product.id} + '/reject'}" method="post">
+                            <button class="btn btn-danger" type="submit">Reject</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

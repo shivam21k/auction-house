@@ -1,11 +1,12 @@
 package com.auctionhouse.app.repository;
 
-import com.auctionhouse.app.models.UserModel;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import com.auctionhouse.app.model.Role;
+import com.auctionhouse.app.model.User;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface UserRepository extends MongoRepository<UserModel, ObjectId> {
-
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
+    long countByRole(Role role);
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Login | Auction House</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+<div class="container narrow">
+    <div class="hero" style="padding-top: 6px; text-align: left;">
+        <h2 style="margin-bottom: 8px;">Welcome Back</h2>
+        <p>Login as buyer, seller, or admin.</p>
+    </div>
+
+    <div class="alert alert-success" th:if="${param.registered}">Account created successfully. Please login.</div>
+    <div class="alert" th:if="${param.error}">Invalid email or password.</div>
+    <div class="alert" th:if="${param.logout}">Logged out successfully.</div>
+
+    <form th:action="@{/login}" method="post">
+        <label>Email</label>
+        <input type="email" name="username" required/>
+
+        <label>Password</label>
+        <input type="password" name="password" required/>
+
+        <button class="btn" type="submit">Login</button>
+    </form>
+
+    <p class="auth-footer muted">New here? <a th:href="@{/signup}">Create account</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Auction House</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+<div class="container narrow">
+    <div class="hero">
+        <h1>Auction House</h1>
+        <p>Buy rare artifacts, sell with confidence, and manage auctions with complete admin control.</p>
+    </div>
+    <div class="row" style="justify-content:center; margin-top: 18px;">
+        <a class="btn" th:href="@{/login}">Login</a>
+        <a class="btn btn-secondary" th:href="@{/signup}">Create Account</a>
+    </div>
+</div>
+</body>
+</html>

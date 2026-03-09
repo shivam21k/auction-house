@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Seller Profile | Auction House</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+</head>
+<body>
+<div class="container narrow">
+    <div class="topbar">
+        <h2>Seller Profile</h2>
+        <a class="btn" th:href="@{/seller/dashboard}">Back</a>
+    </div>
+    <div class="panel">
+        <p><strong>Name:</strong> <span th:text="${seller.fullName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${seller.email}"></span></p>
+        <p><strong>Phone:</strong> <span th:text="${seller.phone}"></span></p>
+        <p><strong>Address:</strong> <span th:text="${seller.address}"></span></p>
+        <p><strong>Company:</strong> <span th:text="${seller.companyName}"></span></p>
+    </div>
+</div>
+</body>
+</html>
